@@ -26,6 +26,8 @@ const placeInfo = {
     "https://map.naver.com/p/search/%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91/place/15567648?placePath=/home?bk_query=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&entry=pll&from=map&fromNxList=true&fromPanelNum=2&timestamp=202605171512&locale=ko&svcName=map_pcv5&searchText=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&placeSearchOption=bk_query%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26entry%3Dpll%26fromNxList%3Dtrue%26originalQuery%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26x%3D126.956100%26y%3D37.554600&searchType=place&c=15.00,0,0,0,dh",
 };
 
+const youtubeVideoId = "vVZrsK9QkMA";
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -85,6 +87,24 @@ export default function Home() {
             <br />
             이야기가 펼쳐집니다
           </p>
+        </div>
+      </section>
+
+      <section className="video-embed" aria-labelledby="video-embed-heading">
+        <div className="video-embed__inner">
+          <h2 id="video-embed-heading" className="video-embed__heading">
+            자연 공간 소개 영상
+          </h2>
+          <div className="video-embed__frame">
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+              title="팔공산 산사랑 소개 영상"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
         </div>
       </section>
 

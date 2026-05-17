@@ -13,7 +13,25 @@
 .hero {
   view-timeline-name: --hero;
   view-timeline-axis: block;
-  height: 220vh;
+  height: 190vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)),
+    url('/hero-photo.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+  filter: saturate(0.75) contrast(1.05);
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero__sticky {

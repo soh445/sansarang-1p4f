@@ -10,12 +10,12 @@ export default function Home() {
   return (
     <main className="home">
       <section className="hero" aria-label="소개">
+        <div className="hero__background" aria-hidden="true" />
         <div className="hero__sticky">
           <p className="hero__eyebrow">산사랑</p>
           <h1 className="hero__title">
-            자연과 사람을
+            팔공
             <br />
-            더 가깝게 연결합니다
           </h1>
           <p className="hero__lead">
             산사랑은 산장, 캠핑장, 자연 공간을 쉽게 소개하고 관리하는

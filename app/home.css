@@ -21,24 +21,45 @@
 .hero__slide {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  /* Desktop: full-bleed hero image */
+  overflow: hidden;
   background-repeat: no-repeat;
   background-blend-mode: overlay;
   filter: saturate(0.75) contrast(1.05);
   pointer-events: none;
   z-index: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.6s ease, background-position 0.3s ease, background-size 0.3s ease;
+}
+
+.hero__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.hero__slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24));
 }
 
 .hero__overlay {
-  position: absolute;
-  inset: 0;
+  /* make overlay participate in the normal flow so it can be constrained by .hero__sticky */
+  position: relative;
+  inset: auto;
   display: grid;
-  place-items: start center;
+  place-items: center center;
   padding: 2.5rem 1.5rem 0;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 5;
+  pointer-events: auto;
+  touch-action: manipulation;
+  width: 100%;
+  max-width: var(--home-max);
+  margin: 0 auto;
 }
 
 .hero__overlay .statement__text {
@@ -111,6 +132,12 @@
   transform: scale(0.98);
 }
 
+/* allow clicks on CTA inside overlay */
+.hero__overlay .hero__cta {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
 .hero {
   position: relative;
 }
@@ -189,6 +216,23 @@
   padding: 1.5rem;
   border-radius: var(--home-radius);
   background: var(--home-surface);
+}
+
+.feature-card__btn {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.feature-card__btn:focus {
+  outline: 3px solid rgba(59,130,246,0.25);
+  border-radius: 12px;
+}
+
+.feature-card__btn:hover .feature-card__title {
+  text-decoration: underline;
 }
 
 .feature-card__title {
@@ -313,6 +357,173 @@
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.gallery-view {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 24, 0.82);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.gallery-view--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.gallery-view__panel {
+  width: min(1120px, 100%);
+  max-height: min(92vh, 900px);
+  overflow: hidden;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.gallery-view__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.75rem 1.75rem 0;
+}
+
+.gallery-view__eyebrow {
+  margin: 0 0 0.5rem;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gallery-view__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.gallery-view__close {
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gallery-view__summary {
+  margin: 0.5rem 1.75rem 1.25rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.gallery-view__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0 1.75rem 1.5rem;
+}
+
+.gallery-view__item {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #f3f4f6;
+}
+
+.gallery-view__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-view__pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.75rem 1.75rem;
+}
+
+.gallery-view__pager-button {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.gallery-view__pager-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.gallery-view__pager-button:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+.gallery-view__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-view__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: #cbd5e1;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-view__dot--active {
+  background: #334155;
+  transform: scale(1.1);
+}
+
+@media (max-width: 900px) {
+  .gallery-view__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery-view {
+    padding: 1rem;
+  }
+
+  .gallery-view__panel {
+    max-height: calc(100vh - 2rem);
+  }
+
+  .gallery-view__header,
+  .gallery-view__summary,
+  .gallery-view__pager {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .gallery-view__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* —— Scroll-driven animations —— */
@@ -458,6 +669,9 @@
   .hero__overlay {
     place-items: start center;
     padding: 1.75rem 1rem 0;
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
   }
 
   .hero__overlay .statement__text {
@@ -468,6 +682,49 @@
   .statement {
     height: auto;
     padding-top: 0;
+  }
+}
+
+/* Make hero images a bit larger on small screens so they remain visible */
+@media (max-width: 900px) {
+  /* Mobile: reduce image size to act like framed photo */
+  .hero__slide {
+    background-size: 55% auto;
+    background-position: 12% center;
+  }
+
+  /* when image is reduced, align overlay content to the right to avoid overlap */
+  .hero__overlay {
+    place-items: start center;
+    padding: 1.75rem 1rem 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  .hero__slide {
+    background-size: 45% auto;
+    background-position: 10% center;
+  }
+}
+
+@media (min-width: 900px) {
+  /* Desktop: keep overlay centered within the hero sticky max-width */
+  .hero__overlay {
+    place-items: center center;
+    padding-left: var(--home-pad);
+    padding-right: var(--home-pad);
+    max-width: var(--home-max);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero__overlay .statement__text {
+    text-align: left;
+    max-width: 40ch;
+  }
+
+  .hero__cta {
+    align-self: start;
   }
 }
 

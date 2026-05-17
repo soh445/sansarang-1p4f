@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Gallery from "./components/Gallery";
 import "./home.css";
 
 const features = [
@@ -28,12 +29,17 @@ const placeInfo = {
 
 const youtubeVideoId = "vVZrsK9QkMA";
 
+const galleryImages = Array.from({ length: 10 }, (_, index) =>
+  heroImages[index % heroImages.length]
+);
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
 export default function Home() {
   const heroRef = useRef<HTMLElement | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   const [slideOpacities, setSlideOpacities] = useState<number[]>(
     heroImages.map((_, index) => (index === 0 ? 1 : 0))
   );
@@ -72,26 +78,49 @@ export default function Home() {
     };
   }, []);
 
+  // delegated click fallback: handle clicks on elements with [data-open-gallery]
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest && (target.closest("[data-open-gallery]") as HTMLElement)) {
+        setGalleryOpen(true);
+      }
+    };
+
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, []);
+
   return (
     <main className="home">
+      <Gallery
+        images={galleryImages}
+        visibleCount={5}
+        open={galleryOpen}
+        onClose={() => setGalleryOpen(false)}
+      />
+
       <section className="hero" aria-label="소개" ref={heroRef}>
         {heroImages.map((src, index) => (
           <div
             key={src}
             className="hero__slide"
             aria-hidden="true"
-            style={{
-              backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${src}')`,
-              opacity: slideOpacities[index],
-            }}
-          />
+            style={{ opacity: slideOpacities[index] }}
+          >
+            <img src={src} alt={`히어로 사진 ${index + 1}`} />
+          </div>
         ))}
-        <div className="hero__overlay">
-          <p className="statement__text">
-            스크롤할수록
-            <br />
-            이야기가 펼쳐집니다
-          </p>
+
+        <div className="hero__sticky">
+          <div className="hero__overlay">
+            <p className="statement__text">
+              스크롤할수록
+              <br />
+              이야기가 펼쳐집니다
+            </p>
+          </div>
         </div>
       </section>
 
@@ -121,10 +150,25 @@ export default function Home() {
           드래그하며 내려보면 카드가 순서대로 나타납니다.
         </p>
         <ul className="features__grid">
+
           {features.map(([title, desc]) => (
             <li key={title} className="feature-card">
-              <h3 className="feature-card__title">{title}</h3>
-              <p className="feature-card__desc">{desc}</p>
+              {title === "둘러보기" ? (
+                <button
+                  type="button"
+                  className="feature-card__btn"
+                  data-open-gallery
+                  onClick={() => setGalleryOpen(true)}
+                >
+                  <h3 className="feature-card__title">{title}</h3>
+                  <p className="feature-card__desc">{desc}</p>
+                </button>
+              ) : (
+                <>
+                  <h3 className="feature-card__title">{title}</h3>
+                  <p className="feature-card__desc">{desc}</p>
+                </>
+              )}
             </li>
           ))}
         </ul>

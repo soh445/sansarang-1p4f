@@ -19,13 +19,17 @@ const heroImages = [
 ];
 
 const placeInfo = {
-  name: "팔공산 산사랑",
+  name: "산사랑(팔공아트홀)",
   category: "자연 관광지",
-  address: "대구광역시 동구 팔공산로",
+  address: "대구 군위군 부계면 한티로 1722",
   description: "네이버 지도에서 검색한 팔공산 산사랑 정보입니다.",
   naverUrl:
     "https://map.naver.com/p/search/%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91/place/15567648?placePath=/home?bk_query=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&entry=pll&from=map&fromNxList=true&fromPanelNum=2&timestamp=202605171512&locale=ko&svcName=map_pcv5&searchText=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&placeSearchOption=bk_query%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26entry%3Dpll%26fromNxList%3Dtrue%26originalQuery%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26x%3D126.956100%26y%3D37.554600&searchType=place&c=15.00,0,0,0,dh",
 };
+
+const kakaoChannelUrl = "http://pf.kakao.com/_aQFsX";
+const kakaoChatUrl = "http://pf.kakao.com/_aQFsX/chat";
+const youtubeChannelUrl = "https://www.youtube.com/@%ED%8C%94%EA%B3%B5%EC%95%84%ED%8A%B8%ED%99%80%EA%B0%80%EC%88%98%EA%B9%80%EB%AF%B8%EC%95%A0";
 
 const youtubeVideoId = "vVZrsK9QkMA";
 
@@ -163,6 +167,37 @@ export default function Home() {
                   <h3 className="feature-card__title">{title}</h3>
                   <p className="feature-card__desc">{desc}</p>
                 </button>
+              ) : title === "카카오 채널 예약문의" ? (
+                <div className="feature-card__actions">
+                  <a
+                    className="feature-card__link"
+                    href={kakaoChannelUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    카카오 채널 바로가기
+                  </a>
+                  <a
+                    className="feature-card__link feature-card__link--primary"
+                    href={kakaoChatUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    카카오 채팅 바로가기
+                  </a>
+                </div>
+              ) : title === "유튜브 채널" ? (
+                <div className="feature-card__actions">
+                  <a
+                    className="feature-card__link feature-card__link--primary"
+                    href={youtubeChannelUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    유튜브 바로가기
+                  </a>
+                  <p className="feature-card__desc">{desc}</p>
+                </div>
               ) : (
                 <>
                   <h3 className="feature-card__title">{title}</h3>
@@ -204,8 +239,12 @@ export default function Home() {
           </a>
         </div>
       </section>
-
-      <footer className="home-footer">© 2026 산사랑</footer>
+      <footer className="home-footer">
+      산사랑(팔공아트홀)대표 김미애
+      <br/>010-6524-0036
+      <br/>054-383-3747
+      <br/>가수김미애 사랑의꽃
+      </footer> 
     </main>
   );
 }

@@ -1,33 +1,81 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import "./home.css";
 
 const features = [
-  ["자연 공간 소개", "산장, 캠핑장 정보를 한곳에서 살펴보세요."],
-  ["간편한 운영", "관리자 없이도 공간을 소개하고 운영할 수 있습니다."],
-  ["예약 연결", "필요할 때만 예약 기능을 연결합니다."],
+  ["둘러보기", "연수원 정보를 한곳에서 살펴보세요."],
+  ["유튜브 채널", "유튜브 채널에서 산사랑의 모습을 영상으로 만나보세요."],
+  ["카카오 채널 예약문의",  "카카오 채널로 예약 문의를 남겨보세요."],
 ] as const;
 
+const heroImages = [
+  "/photos/KakaoTalk_20260517_114334564.jpg",
+  "/photos/KakaoTalk_20260517_114400800.jpg",
+  "/photos/KakaoTalk_20260517_114514523.jpg",
+  "/photos/KakaoTalk_20260517_114557666.jpg",
+  "/photos/KakaoTalk_20260517_114631659.jpg",
+];
+
+const placeInfo = {
+  name: "팔공산 산사랑",
+  category: "자연 관광지",
+  address: "대구광역시 동구 팔공산로",
+  description: "네이버 지도에서 검색한 팔공산 산사랑 정보입니다.",
+  naverUrl:
+    "https://map.naver.com/p/search/%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91/place/15567648?placePath=/home?bk_query=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&entry=pll&from=map&fromNxList=true&fromPanelNum=2&timestamp=202605171512&locale=ko&svcName=map_pcv5&searchText=%ED%8C%94%EA%B3%B5%EC%82%B0%20%EC%82%B0%EC%82%AC%EB%9E%91&placeSearchOption=bk_query%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26entry%3Dpll%26fromNxList%3Dtrue%26originalQuery%3D%25ED%258C%2594%25EA%25B3%25B5%25EC%2582%25B0%2520%25EC%2582%25B0%25EC%2582%25AC%25EB%259E%2591%26x%3D126.956100%26y%3D37.554600&searchType=place&c=15.00,0,0,0,dh",
+};
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
 export default function Home() {
+  const heroRef = useRef<HTMLElement | null>(null);
+  const [heroBg, setHeroBg] = useState(heroImages[0]);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    let frame = 0;
+
+    const updateBackground = () => {
+      const totalScroll = Math.max(hero.offsetHeight - window.innerHeight, 1);
+      const progress = clamp((window.scrollY - hero.offsetTop) / totalScroll, 0, 1);
+      const nextIndex = Math.min(
+        heroImages.length - 1,
+        Math.floor(progress * heroImages.length)
+      );
+      setHeroBg((current) =>
+        current === heroImages[nextIndex] ? current : heroImages[nextIndex]
+      );
+    };
+
+    const onScroll = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateBackground);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateBackground();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <main className="home">
-      <section className="hero" aria-label="소개">
-        <div className="hero__background" aria-hidden="true" />
-        <div className="hero__sticky">
-          <p className="hero__eyebrow">산사랑</p>
-          <h1 className="hero__title">
-            팔공
-            <br />
-          </h1>
-          <p className="hero__lead">
-            산사랑은 산장, 캠핑장, 자연 공간을 쉽게 소개하고 관리하는
-            플랫폼입니다.
-          </p>
-          <a className="hero__cta" href="#explore">
-            둘러보기
-          </a>
-          <span className="hero__scroll-hint" aria-hidden="true">
-            스크롤
-          </span>
-        </div>
+      <section className="hero" aria-label="소개" ref={heroRef}>
+        <div
+          className="hero__background"
+          aria-hidden="true"
+          style={{
+            backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${heroBg}')`,
+          }}
+        />
       </section>
 
       <section className="statement" aria-label="비전">
@@ -42,7 +90,7 @@ export default function Home() {
 
       <section className="features" id="explore" aria-labelledby="features-heading">
         <h2 id="features-heading" className="features__heading">
-          이렇게 돕습니다
+          안내
         </h2>
         <p className="features__sub">
           드래그하며 내려보면 카드가 순서대로 나타납니다.
@@ -55,6 +103,37 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="place-info" aria-labelledby="place-info-heading">
+        <div className="place-info__content">
+          <h2 id="place-info-heading" className="place-info__heading">
+            장소 정보
+          </h2>
+          <p className="place-info__description">{placeInfo.description}</p>
+          <dl className="place-info__list">
+            <div className="place-info__row">
+              <dt className="place-info__label">장소명</dt>
+              <dd className="place-info__value">{placeInfo.name}</dd>
+            </div>
+            <div className="place-info__row">
+              <dt className="place-info__label">카테고리</dt>
+              <dd className="place-info__value">{placeInfo.category}</dd>
+            </div>
+            <div className="place-info__row">
+              <dt className="place-info__label">주소</dt>
+              <dd className="place-info__value">{placeInfo.address}</dd>
+            </div>
+          </dl>
+          <a
+            className="place-info__link"
+            href={placeInfo.naverUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            네이버 지도에서 보기
+          </a>
+        </div>
       </section>
 
       <footer className="home-footer">© 2026 산사랑</footer>

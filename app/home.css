@@ -13,12 +13,12 @@
 .hero {
   view-timeline-name: --hero;
   view-timeline-axis: block;
-  height: 190vh;
+  height: 420vh;
   position: relative;
   overflow: hidden;
 }
 
-.hero__background {
+.hero__slide {
   position: absolute;
   inset: 0;
   background-size: cover;
@@ -26,10 +26,9 @@
   background-repeat: no-repeat;
   background-blend-mode: overlay;
   filter: saturate(0.75) contrast(1.05);
-  opacity: 1;
   pointer-events: none;
   z-index: 0;
-  transition: background-image 0.5s ease, opacity 0.5s ease;
+  transition: opacity 0.6s ease;
 }
 
 .hero__overlay {
@@ -453,7 +452,7 @@
   }
 
   .hero {
-    height: 75vh;
+    height: 280vh;
   }
 
   .hero__overlay {

@@ -34,7 +34,9 @@ function clamp(value: number, min: number, max: number) {
 
 export default function Home() {
   const heroRef = useRef<HTMLElement | null>(null);
-  const [heroBg, setHeroBg] = useState(heroImages[0]);
+  const [slideOpacities, setSlideOpacities] = useState<number[]>(
+    heroImages.map((_, index) => (index === 0 ? 1 : 0))
+  );
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -44,15 +46,15 @@ export default function Home() {
 
     const updateBackground = () => {
       const heroTop = hero.offsetTop;
-      const heroHeight = hero.offsetHeight;
-      const scrollRange = Math.max(window.innerHeight * 1.8, heroHeight * 1.2, 1);
-      const progress = clamp((window.scrollY - heroTop) / scrollRange, 0, 1);
-      const nextIndex = Math.min(
-        heroImages.length - 1,
-        Math.floor(progress * heroImages.length)
-      );
-      setHeroBg((current) =>
-        current === heroImages[nextIndex] ? current : heroImages[nextIndex]
+      const totalScroll = Math.max(hero.offsetHeight - window.innerHeight, 1);
+      const progress = clamp((window.scrollY - heroTop) / totalScroll, 0, 1);
+      const slideProgress = progress * (heroImages.length - 1);
+
+      setSlideOpacities(
+        heroImages.map((_, index) => {
+          const distance = Math.abs(slideProgress - index);
+          return distance >= 1 ? 0 : 1 - distance;
+        })
       );
     };
 
@@ -72,6 +74,18 @@ export default function Home() {
 
   return (
     <main className="home">
+      <section className="hero" aria-label="소개" ref={heroRef}>
+        {heroImages.map((src, index) => (
+          <div
+            key={src}
+            className="hero__slide"
+            aria-hidden="true"
+            style={{
+              backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${src}')`,
+              opacity: slideOpacities[index],
+            }}
+          />
+        ))}
         <div className="hero__overlay">
           <p className="statement__text">
             스크롤할수록
@@ -79,14 +93,6 @@ export default function Home() {
             이야기가 펼쳐집니다
           </p>
         </div>
-      <section className="hero" aria-label="소개" ref={heroRef}>
-        <div
-          className="hero__background"
-          aria-hidden="true"
-          style={{
-            backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${heroBg}')`,
-          }}
-        />
       </section>
 
       <section className="video-embed" aria-labelledby="video-embed-heading">

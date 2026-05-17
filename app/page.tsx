@@ -43,8 +43,10 @@ export default function Home() {
     let frame = 0;
 
     const updateBackground = () => {
-      const totalScroll = Math.max(hero.offsetHeight - window.innerHeight, 1);
-      const progress = clamp((window.scrollY - hero.offsetTop) / totalScroll, 0, 1);
+      const heroTop = hero.offsetTop;
+      const heroHeight = hero.offsetHeight;
+      const scrollRange = Math.max(window.innerHeight * 1.8, heroHeight * 1.2, 1);
+      const progress = clamp((window.scrollY - heroTop) / scrollRange, 0, 1);
       const nextIndex = Math.min(
         heroImages.length - 1,
         Math.floor(progress * heroImages.length)
@@ -70,6 +72,13 @@ export default function Home() {
 
   return (
     <main className="home">
+        <div className="hero__overlay">
+          <p className="statement__text">
+            스크롤할수록
+            <br />
+            이야기가 펼쳐집니다
+          </p>
+        </div>
       <section className="hero" aria-label="소개" ref={heroRef}>
         <div
           className="hero__background"
@@ -78,13 +87,6 @@ export default function Home() {
             backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${heroBg}')`,
           }}
         />
-        <div className="hero__overlay">
-          <p className="statement__text">
-            스크롤할수록
-            <br />
-            이야기가 펼쳐집니다
-          </p>
-        </div>
       </section>
 
       <section className="video-embed" aria-labelledby="video-embed-heading">

@@ -36,8 +36,8 @@
   position: absolute;
   inset: 0;
   display: grid;
-  place-items: end center;
-  padding: 0 1.5rem 3rem;
+  place-items: start center;
+  padding: 2.5rem 1.5rem 0;
   z-index: 1;
   pointer-events: none;
 }
@@ -47,9 +47,9 @@
   max-width: 18ch;
   color: #ffffff;
   text-align: center;
-  text-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.05;
+  text-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  line-height: 1.1;
 }
 
 .hero__sticky {
@@ -453,17 +453,17 @@
   }
 
   .hero {
-    height: 90vh;
+    height: 75vh;
   }
 
   .hero__overlay {
-    place-items: center;
-    padding: 0 1rem 2rem;
+    place-items: start center;
+    padding: 1.75rem 1rem 0;
   }
 
   .hero__overlay .statement__text {
     max-width: 95%;
-    font-size: clamp(1.8rem, 8vw, 2.3rem);
+    font-size: clamp(1.6rem, 8vw, 2rem);
   }
 
   .statement {

@@ -37,6 +37,51 @@ const galleryImages = Array.from({ length: 10 }, (_, index) =>
   heroImages[index % heroImages.length]
 );
 
+const facilities = [
+  {
+    title: "연회장 & 행사 공간",
+    description: "넓고 쾌적한 연회장과 행사 공간으로 돌잔치, 회갑연, 동창회, 야외 예식을 모두 지원합니다.",
+  },
+  {
+    title: "주차 & 접근성",
+    description: "팔공산 터널 옆 위치로 접근성이 뛰어나며, 대형 버스도 들어올 수 있는 넉넉한 주차 공간을 제공합니다.",
+  },
+  {
+    title: "객실 & 휴식",
+    description: "편안한 객실과 휴식 공간으로 자연의 소리를 들으며 여유롭게 머무를 수 있습니다.",
+  },
+];
+
+const testimonials = [
+  {
+    quote: "친절한 서비스와 아름다운 풍경 덕분에 정말 만족스러운 연수가 되었습니다.",
+    author: "기업 연수 담당자",
+  },
+  {
+    quote: "아이들과 함께한 돌잔치가 무척 기억에 남습니다. 내부도 깨끗하고 편안했어요.",
+    author: "가족 손님",
+  },
+  {
+    quote: "카카오 채널 상담도 빠르고, 예약부터 안내까지 모두 매끄럽게 진행되었습니다.",
+    author: "단체 예약 고객",
+  },
+];
+
+const faqs = [
+  {
+    question: "연수원 예약은 어떻게 하나요?",
+    answer: "카카오 채널 또는 채팅으로 예약 문의를 남겨주시면 빠르게 안내드립니다.",
+  },
+  {
+    question: "주차는 무료인가요?",
+    answer: "네, 고객님을 위한 무료 주차 공간이 준비되어 있습니다.",
+  },
+  {
+    question: "단체 행사도 가능한가요?",
+    answer: "돌잔치, 회갑연, 동창회, 야외 예식 등 다양한 단체 행사에 맞춰 준비해드립니다.",
+  },
+];
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -104,7 +149,6 @@ export default function Home() {
         open={galleryOpen}
         onClose={() => setGalleryOpen(false)}
       />
-
       <section className="hero" aria-label="소개" ref={heroRef}>
         {heroImages.map((src, index) => (
           <div
@@ -119,11 +163,29 @@ export default function Home() {
 
         <div className="hero__sticky">
           <div className="hero__overlay">
-            <p className="statement__text">
-              스크롤할수록
-              <br />
-              이야기가 펼쳐집니다
+            <h1 className="hero__title">산사랑 연수원에 오신 것을 환영합니다.</h1>
+            <p className="hero__lead">
+              자연과 함께하는 편안한 연수, 돌잔치, 회갑연, 야외 예식까지 모두 가능한
+              팔공산 산사랑의 특별한 공간입니다.
             </p>
+            <div className="hero__actions">
+              <a
+                className="hero__button hero__button--primary"
+                href={kakaoChatUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                채팅으로 예약 문의
+              </a>
+              <a
+                className="hero__button hero__button--secondary"
+                href={youtubeChannelUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                유튜브 채널 보기
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -151,10 +213,10 @@ export default function Home() {
           안내
         </h2>
         <p className="features__sub">
-          드래그하며 내려보면 카드가 순서대로 나타납니다.
+          아름다운 팔공산의 경치를 느끼시면서 소중한 분들과의 모임을 가질 수 있는 산사랑입니다.
+          저희 연회장은 수려한 풍경과 편리한 교통(팔공산 터널 옆)으로 다양한 행사를 지원합니다.
         </p>
         <ul className="features__grid">
-
           {features.map(([title, desc]) => (
             <li key={title} className="feature-card">
               {title === "둘러보기" ? (
@@ -175,7 +237,7 @@ export default function Home() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    카카오 채널 바로가기
+                    채널 URL
                   </a>
                   <a
                     className="feature-card__link feature-card__link--primary"
@@ -183,7 +245,7 @@ export default function Home() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    카카오 채팅 바로가기
+                    채팅 URL
                   </a>
                 </div>
               ) : title === "유튜브 채널" ? (
@@ -207,6 +269,51 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="home-facilities" aria-labelledby="facilities-heading">
+        <div className="section-header">
+          <h2 id="facilities-heading">시설 안내</h2>
+          <p>행사형 연수, 가족 모임, 단체 예약까지 모두 만족시키는 공간입니다.</p>
+        </div>
+        <div className="facility-grid">
+          {facilities.map(({ title, description }) => (
+            <article key={title} className="facility-card">
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="testimonials" aria-labelledby="testimonials-heading">
+        <div className="section-header">
+          <h2 id="testimonials-heading">고객 후기</h2>
+          <p>산사랑을 다녀간 고객님들이 남긴 생생한 후기입니다.</p>
+        </div>
+        <div className="testimonial-grid">
+          {testimonials.map(({ quote, author }) => (
+            <figure key={author} className="testimonial-card">
+              <blockquote>“{quote}”</blockquote>
+              <figcaption>{author}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="faq" aria-labelledby="faq-heading">
+        <div className="section-header">
+          <h2 id="faq-heading">자주 묻는 질문</h2>
+          <p>예약 전 궁금한 내용을 빠르게 확인하세요.</p>
+        </div>
+        <div className="faq-grid">
+          {faqs.map(({ question, answer }) => (
+            <div key={question} className="faq-card">
+              <h3>{question}</h3>
+              <p>{answer}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="place-info" aria-labelledby="place-info-heading">

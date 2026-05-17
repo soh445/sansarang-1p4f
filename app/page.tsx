@@ -78,10 +78,7 @@ export default function Home() {
             backgroundImage: `linear-gradient(rgba(12, 25, 34, 0.36), rgba(12, 25, 34, 0.24)), url('${heroBg}')`,
           }}
         />
-      </section>
-
-      <section className="statement" aria-label="비전">
-        <div className="statement__pin">
+        <div className="hero__overlay">
           <p className="statement__text">
             스크롤할수록
             <br />
